@@ -16,7 +16,6 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString(exclude = {"usuario", "producto", "pedido"})
 public class Valoracion {
 
     @Id

@@ -60,13 +60,12 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-<<<<<<< HEAD
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
-=======
->>>>>>> 107617df1b99e8a6c7f7b7b3d078c1964b980dc3
+
     </dependencies>
 
     <build>
