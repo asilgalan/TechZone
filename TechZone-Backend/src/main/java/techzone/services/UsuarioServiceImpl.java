@@ -2,6 +2,7 @@ package techzone.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import techzone.models.Usuario;
 import techzone.repositories.IUsuarioRepository;
 
@@ -15,20 +16,23 @@ public class UsuarioServiceImpl implements IUsuarioService {
     @Autowired
     private IUsuarioRepository usuarioRepository;
     @Override
+    @Transactional(readOnly = true)
     public List<Usuario> obtenerUsuarios() {
         return usuarioRepository.findAll();
     }
-
+    
+    @Transactional(readOnly = true)
     @Override
     public Optional<Usuario> obtenerPorId(Long id) {
         return usuarioRepository.findById(id);
     }
 
+    @Transactional
     @Override
     public Usuario guardarUsuario(Usuario usuario) {
       return usuarioRepository.save(usuario);
     }
-
+    @Transactional
     @Override
     public void eliminarUsuario(Long id) {
 

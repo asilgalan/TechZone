@@ -13,6 +13,7 @@ import java.util.Optional;
 
 
 /* cada metodo por asi decirlo es una api */
+@CrossOrigin(origins = {"http://localhost:4200"})
 @RestController
 @RequestMapping("/api")
 public class UsuarioController {
@@ -21,7 +22,7 @@ public class UsuarioController {
     private IUsuarioService usuarioService;
 
 
-    @GetMapping()
+    @GetMapping("/usuarios")
     public List<Usuario> obtenerUsuarios() {
 
         return usuarioService.obtenerUsuarios();
@@ -34,6 +35,7 @@ public class UsuarioController {
         }
         return ResponseEntity.notFound().build();
     }
+
     @PostMapping
     public ResponseEntity<?> AddUsuario(@RequestBody Usuario usuario) {
 
@@ -44,16 +46,17 @@ public class UsuarioController {
     public ResponseEntity<?> ActualizarUsuario(@PathVariable long id, @RequestBody Usuario usuario) {
         Optional<Usuario> UsuarioPorid = usuarioService.obtenerPorId(id);
         if (UsuarioPorid.isPresent()) {
-            usuario.setId(id);
+            usuario.setIdUsuario(id);
             return ResponseEntity.ok(usuarioService.guardarUsuario(usuario));
         }
         return ResponseEntity.notFound().build();
     }
 
-    @DeleteMapping("/{id")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> eliminarUsuario(@PathVariable long id) {
         Optional<Usuario> UsuarioPorid = usuarioService.obtenerPorId(id);
         if (UsuarioPorid.isPresent()) {
+            usuarioService.eliminarUsuario(id);
             return ResponseEntity.ok().build();
         }
         return ResponseEntity.notFound().build();
