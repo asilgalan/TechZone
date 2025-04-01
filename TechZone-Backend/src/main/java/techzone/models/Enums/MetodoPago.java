@@ -1,4 +1,4 @@
-package techzone.models;
+package techzone.models.Enums;
 
 public enum MetodoPago {
     Tarjeta,

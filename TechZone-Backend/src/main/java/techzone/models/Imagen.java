@@ -1,19 +1,20 @@
 package techzone.models;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
 import lombok.*;
 
 @Entity
 @Table(name = "imagenes")
 @Data
-@NoArgsConstructor;
+@NoArgsConstructor
 @AllArgsConstructor
 public class Imagen {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(null)
+    @Column(name="id_imagen")
+    private int idImagen;
+
 
 
 }
