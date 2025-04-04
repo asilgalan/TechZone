@@ -47,7 +47,7 @@ public class Pedido {
     @Column(nullable = false,name="iva_total")
     private Double ivaTotal;
 
-     private Descuento descuento
+//     private Descuento descuento
     @Column(name="codigo_descuento")
     private String codigoDescuento;
     private String observacion;

@@ -52,39 +52,39 @@ public class Usuario {
     @Column(nullable = false,name = "ip_registro")
     private String ipRegistro;
     @NotBlank()
-    @Column(nullable = false ,name = "fecha_nacimiento")
+    @Column(name = "fecha_nacimiento")
     private Date fechaNacimiento;
 
-    @NotBlank()
-    @Column(nullable = false,name="fecha_registro")
-    private LocalDateTime fechaRegistro;
-    @NotBlank()
-    @Column(nullable = false,name="ultima_actualizacion")
-    private LocalDateTime ultimaActualizacion;
+    @NotNull
+    @Column(name="fecha_registro")
+    private Date fechaRegistro;
+    @NotNull
+    @Column(name="ultima_actualizacion")
+    private Date ultimaActualizacion;
 
-    @Column(nullable = false,name="acepta_marketing")
-    private String aceptaMarketing;
+    @Column(name="acepta_marketing")
+    private Boolean aceptaMarketing=false;
 
     @NotBlank()
     @Column(name="cuenta_verificada")
-    private String cuentaVerificada;
+    private Boolean cuentaVerificada=false;
     @ElementCollection
     @Enumerated(EnumType.STRING)
-    @CollectionTable(name = "usuario_roles", joinColumns = @JoinColumn(name = "usuario_id"))
+    @CollectionTable(name = "usuario_roles",
+            joinColumns = @JoinColumn(name = "usuario_id", referencedColumnName = "id_usuario")
+    )
     @Column(name = "rol")
     private Set<Roles> roles;
+
+
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
     private List<Direccion> direcciones;
 
     @PrePersist
-    public void prePersist() {
-
-        setFechaRegistro(LocalDateTime.now());
-    }
+    public void prePersist() {setFechaRegistro(new Date());
+        setUltimaActualizacion(new Date());}
 
     @PreUpdate
-    public void preUpdate() {
-        setUltimaActualizacion(LocalDateTime.now());
-    }
+    public void preUpdate() {setUltimaActualizacion(new Date());}
 }

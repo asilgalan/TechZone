@@ -15,13 +15,14 @@ import java.time.LocalDateTime;
 public class Inventario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id_inventario")
+    @JoinColumn(name="id_inventario")
     private Long idInventario;
 
     @ManyToOne(fetch = FetchType.LAZY)
 
-    @Column(nullable = false,name="id_producto")
+    @JoinColumn(nullable = false,name="id_producto")
     private Producto producto;
+
     @Column(nullable = false)
     private int stock;
     private LocalDateTime fecha_actualizacion;

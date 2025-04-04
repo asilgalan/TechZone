@@ -16,7 +16,7 @@ import java.util.List;
 public class Producto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false, updatable = false)
+    @Column(name="id_producto")
     private Long idProducto;
     @NotBlank
     @Column(nullable = false)
@@ -31,11 +31,11 @@ public class Producto {
     @Column(name="descripcion_larga")
     private String descripcionLarga;
     @ManyToOne(fetch = FetchType.EAGER)
-    @Column(nullable = false,name = "id_marca")
+    @JoinColumn(nullable = false,name = "id_marca")
     private Marca marca;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @Column(nullable = false,name="id_categoria")
+    @JoinColumn(nullable = false,name="id_categoria")
     private Categoria categoria;
 
     @NotBlank
@@ -50,7 +50,6 @@ public class Producto {
     @NotNull
     private Double coste;
     private  Double iva;
-
     private Double peso;
 
     @Column(name="fecha_lanzamiento")
@@ -74,6 +73,8 @@ public class Producto {
     @PrePersist
     public void prePersist() {
         setFechaCreacion(LocalDateTime.now());
+        setUltimaActualizacion(LocalDateTime.now());
+
     }
     @PreUpdate
     public void preUpdate() {

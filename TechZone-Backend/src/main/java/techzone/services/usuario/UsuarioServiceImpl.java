@@ -1,4 +1,4 @@
-package techzone.services;
+package techzone.services.usuario;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +15,7 @@ public class UsuarioServiceImpl implements IUsuarioService {
 
     @Autowired
     private IUsuarioRepository usuarioRepository;
+
     @Override
     @Transactional(readOnly = true)
     public List<Usuario> obtenerUsuarios() {

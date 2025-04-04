@@ -3,15 +3,17 @@ package techzone.models;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
-@Table(name="Direcciones")
+@Table(name="direcciones")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -52,21 +54,22 @@ public class Direccion {
     @NotBlank()
     @Column(nullable = true)
     private String telefono;
-    @NotBlank()
+    @NotNull
     @Column(nullable = false,name="fecha_creacion")
-    private LocalDateTime fechaCreacion;
+    private Date fechaCreacion;
 
-    @NotBlank()
-    @Column(nullable = false,name="ultima_actualizacion")
-    private LocalDateTime ultimaActualizacion;
+    @NotNull
+    @Column(name="ultima_actualizacion")
+    private Date ultimaActualizacion;
 
     @PrePersist
     public void prePersist() {
-        setFechaCreacion(LocalDateTime.now());
+        setFechaCreacion(new Date());
+        setUltimaActualizacion(new Date());
     }
     @PreUpdate
     public void preUpdate() {
-        setUltimaActualizacion(LocalDateTime.now());
+        setUltimaActualizacion(new Date());
     }
 
 }

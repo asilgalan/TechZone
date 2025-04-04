@@ -2,6 +2,7 @@ package techzone.models;
 
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -29,10 +30,11 @@ public class Descuento {
     private String nombre;
     private Double valor;
 
+    @NotNull
     @Column(nullable = false, name = "fecha_inicio")
     private Date fechaInicio;
 
-    @Column(name = "fecha_fin") // Corregí el nombre que estaba repetido como fecha_inicio
+    @Column(name = "fecha_fin")
     private Date fechaFin;
 
     private Double total;

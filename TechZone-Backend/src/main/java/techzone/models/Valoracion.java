@@ -1,5 +1,6 @@
 package techzone.models;
 
+import com.fasterxml.jackson.databind.ser.std.DateSerializer;
 import lombok.*;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
@@ -12,7 +13,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "valoraciones")
-@Getter @Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -53,7 +54,7 @@ public class Valoracion {
 
 
     @Column(name = "fecha", updatable = false)
-    private LocalDateTime fecha;
+    private Date fecha;
 
 
     @Column(nullable = true)
@@ -72,8 +73,9 @@ public class Valoracion {
         this.puntuacion = puntuacion;
     }
 
+
     @PrePersist
     public void prePersist() {
-        setFecha(LocalDateTime.now());
+        setFecha(new Date());
     }
 }

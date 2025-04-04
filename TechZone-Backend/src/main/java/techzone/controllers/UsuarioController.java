@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import techzone.models.Usuario;
-import techzone.services.IUsuarioService;
+import techzone.services.usuario.IUsuarioService;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,9 +24,9 @@ public class UsuarioController {
 
     @GetMapping("/usuarios")
     public List<Usuario> obtenerUsuarios() {
-
         return usuarioService.obtenerUsuarios();
     }
+
     @GetMapping("/{id}")
     public ResponseEntity<?> obtenerPorId(@PathVariable long id) {
         Optional<Usuario> UsuarioPorid=usuarioService.obtenerPorId(id);
@@ -38,7 +38,6 @@ public class UsuarioController {
 
     @PostMapping
     public ResponseEntity<?> AddUsuario(@RequestBody Usuario usuario) {
-
         return ResponseEntity.status(HttpStatus.CREATED).body(usuarioService.guardarUsuario(usuario));
     }
 

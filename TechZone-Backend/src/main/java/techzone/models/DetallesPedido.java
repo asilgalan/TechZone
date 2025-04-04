@@ -13,8 +13,12 @@ public class DetallesPedido {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idDetallesPedido;
     @ManyToMany
-    @JoinColumn(name="id_producto")
-    private List<Producto> producto;
+    @JoinTable(name = "detalles_pedido_producto",
+            joinColumns = @JoinColumn(name = "detalles_pedido_id"),
+            inverseJoinColumns = @JoinColumn(name = "producto_id")
+    )
+    private List<Producto> productos;
+
 
     @ManyToOne
     @JoinColumn(name = "id_pedido")
