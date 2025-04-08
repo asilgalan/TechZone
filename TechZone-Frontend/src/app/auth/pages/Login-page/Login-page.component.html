@@ -1,0 +1,48 @@
+<div class="flex min-h-full flex-col justify-center items-center px-6 lg:px-8">
+  <div class="sm:mx-auto sm:w-full sm:max-w-sm">
+    <a routerLink="/">
+      <img class="h-40 w-auto mx-auto mb-4" src="assets/logo/logoTechZone.png" alt="TechZone">
+    </a>
+
+    <h2 class="text-center text-2xl font-bold tracking-tight text-gray-900">Iniciar Sesión</h2>
+  </div>
+  <p class="text-lg text-center mx-auto mt-4 max-w-md">
+    Inicia Sesión para que puedas disfrutar de todos nuestros servicios
+  </p>
+  <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-sm">
+    <form class="space-y-6" action="#" method="POST">
+      <div>
+        <label for="email" class="block text-sm font-medium text-gray-900">Email</label>
+        <div class="mt-2">
+          <input type="email" name="email" id="email" autocomplete="email" required
+            class="block w-full rounded-md bg-white px-3 py-2 text-base text-gray-900 outline outline-1 outline-gray-300 placeholder-gray-400 focus:outline-2 focus:outline-offset-2 focus:outline-indigo-400 sm:text-sm">
+        </div>
+      </div>
+      <div>
+        <div class="flex items-center justify-between">
+          <label for="password" class="block text-sm font-medium text-gray-900">Contraseña</label>
+
+        </div>
+        <div class="mt-2">
+          <input type="password" name="password" id="password" autocomplete="current-password" required
+            class="block w-full rounded-md bg-white px-3 py-2 text-base text-gray-900 outline outline-1 outline-gray-300 placeholder-gray-400 focus:outline-2 focus:outline-offset-2 focus:outline-indigo-600 sm:text-sm">
+        </div>
+        <div class="text-sm mt-3 text-end">
+          <a href="#" class="font-semibold text-indigo-600 hover:text-indigo-500">Recordar Contraseña?</a>
+        </div>
+      </div>
+
+      <div>
+        <button type="submit"
+          class="flex w-full justify-center rounded-md border border-indigo-600 ring-indigo-600 px-3 py-2 text-sm font-semibold text-black shadow hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-400">
+        Iniciar Sesión
+        </button>
+      </div>
+    </form>
+    <p class="mt-6 text-center text-sm text-gray-500">
+       ¿Aún no tienes cuenta?
+      <a routerLink="/auth/registro" class="font-semibold text-indigo-600 hover:text-indigo-500">Regístrate ahora</a>
+    </p>
+  </div>
+</div>
+

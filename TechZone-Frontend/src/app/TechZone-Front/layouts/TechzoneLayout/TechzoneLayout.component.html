@@ -1,0 +1,13 @@
+<div class="flex flex-col min-h-screen">
+  <!-- Navbar siempre arriba -->
+  <nav-bar class="fixed top-0 w-full z-50"></nav-bar>
+
+  <!-- Contenido principal (ocupa el espacio restante) -->
+  <main class="flex-grow pt-16 pb-16 mt-16 mb-16">
+    <router-outlet></router-outlet>
+  </main>
+
+  <!-- Footer siempre abajo -->
+   <app-footer-home class="bottom-0 w-full"></app-footer-home>
+
+</div>
