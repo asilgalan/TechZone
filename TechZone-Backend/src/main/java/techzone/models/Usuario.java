@@ -51,7 +51,7 @@ public class Usuario {
     @NotBlank()
     @Column(nullable = false,name = "ip_registro")
     private String ipRegistro;
-    @NotBlank()
+    @NotNull
     @Column(name = "fecha_nacimiento")
     private Date fechaNacimiento;
 
@@ -65,10 +65,10 @@ public class Usuario {
     @Column(name="acepta_marketing")
     private Boolean aceptaMarketing=false;
 
-    @NotBlank()
+    @NotNull()
     @Column(name="cuenta_verificada")
     private Boolean cuentaVerificada=false;
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
     @CollectionTable(name = "usuario_roles",
             joinColumns = @JoinColumn(name = "usuario_id", referencedColumnName = "id_usuario")
@@ -77,6 +77,11 @@ public class Usuario {
     private Set<Roles> roles;
 
 
+    @Override
+    public String toString() {
+        return super.toString();
+
+    }
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
     private List<Direccion> direcciones;

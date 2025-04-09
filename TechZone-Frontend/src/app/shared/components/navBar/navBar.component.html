@@ -14,7 +14,6 @@
       <a routerLink="/">
         <img src="../../../../assets/logo/logoTechZone.png" alt="Logo" class="h-30 w-30 lg:h-36 lg:w-full ">
       </a>
-
       <!-- Botón categorías desktop -->
       <div class="hidden md:block mr-5 menu-container">
         <button (click)="toggleCategories()"
@@ -37,13 +36,35 @@
 
 
     </div>
-
-    <!-- Iconos de usuario -->
     <div class="flex items-center space-x-4">
-      <button routerLink="/auth/login"
-              class="p-1 px-3 mx-1 bg-gray-200 rounded-full hover:bg-gray-300 transition-colors lg:p-4 lg:px-5">
-        <i class="pi pi-user text-xl" style="color: #000000;"></i>
-      </button>
+      @if (authService.authStatus() !== 'authenticated') {
+        <button routerLink="/auth/login"
+          class="p-1 px-3 mx-1 bg-gray-200 rounded-full hover:bg-gray-300 transition-colors lg:p-4 lg:px-5">
+          <i class="pi pi-user text-xl" style="color: #000000;"></i>
+        </button>
+      }
+      @else {
+        <!-- Botón que abre el modal -->
+        <button (click)="verUserMenu()"
+          class="p-1 px-3 mx-1 bg-gray-200 rounded-full hover:bg-gray-300 transition-colors lg:p-4 lg:px-5">
+          <i class="pi pi-user text-xl" style="color: #000000;"></i>
+        </button>
+        @if(inicioSesion()){
+          <div role="alert" class="alert alert-warning">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+            <span>Bienvenido {{authService.user()?.nombre}}</span>
+          </div>
+        }
+
+
+        <!-- Modal -->
+
+      }
+
+
+
       <button (click)="openFavorites()"
               class="p-1 px-3 mx-1 bg-gray-200 rounded-full hover:bg-gray-300 transition-colors lg:p-4 lg:px-5">
         <i class="pi pi-heart text-xl" style="color: #000000;"></i>
@@ -176,9 +197,10 @@
   </div>
 </div>
 
-<!-- Componentes de favoritos y carrito -->
+
 <producto-favorito [isOpen]="favoritesOpen" (closeFavorites)="favoritesOpen = false"></producto-favorito>
 <app-carrito-sidebar [isOpen]="cartOpen" (closeCart)="cartOpen = false"></app-carrito-sidebar>
 
-
+<!-- <app-login-page [hasLogin]="inicioSesion"></app-login-page> -->
+<app-menu-mi-cuenta [verMenuMiCuenta]="verMenuMiCuenta()"   (closeMenu)="verMenuMiCuenta.set(false)"> </app-menu-mi-cuenta>
 

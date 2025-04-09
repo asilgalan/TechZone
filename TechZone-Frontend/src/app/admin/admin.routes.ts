@@ -1,3 +1,10 @@
 import { Routes } from '@angular/router';
+import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 
-export const routes: Routes = []
+export const adminRoutes: Routes = [
+
+  {
+    path:'',
+    component:AdminLayoutComponent
+  }
+]

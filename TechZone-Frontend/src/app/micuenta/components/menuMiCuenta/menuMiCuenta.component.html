@@ -1,0 +1,101 @@
+
+@if(verMenuMiCuenta){
+
+
+<div class="fixed inset-0 overflow-hidden z-50"
+ aria-labelledby="user-menu-title" role="dialog" aria-modal="true">
+  <div class="absolute inset-0 overflow-hidden">
+    <!-- Fondo oscuro -->
+    <div class="fixed inset-0 bg-gray-100/35 transition-opacity" aria-hidden="true" (click)="closeMenu.emit()"></div>
+
+    <div class="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
+      <!-- Panel del menú -->
+      <div class="pointer-events-auto w-screen max-w-md">
+        <div class="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">
+          <div class="flex-1 overflow-y-auto px-4 py-6 sm:px-6">
+            <!-- Encabezado -->
+            <div class="flex items-start justify-between">
+              <h2 class="text-lg font-medium text-gray-900">Mi cuenta</h2>
+              <button type="button" class="relative -m-2 p-2 text-gray-400 hover:text-gray-500" (click)="closeMenu.emit()">
+                <span class="absolute -inset-0.5"></span>
+                <span class="sr-only">Cerrar</span>
+                <svg class="size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            <!-- Información del usuario -->
+            <div class="mt-4 flex items-center space-x-3">
+              <div class="size-12 rounded-full bg-gray-200 flex items-center justify-center">
+                <i class="pi pi-user text-xl text-gray-600"></i>
+              </div>
+              <div>
+                <h3 class="font-medium text-gray-900">Hola, {{authService.user()?.usuario}}</h3>
+                <p class="text-sm text-gray-500">{{authService.user()?.email}}</p>
+              </div>
+            </div>
+
+            <!-- Lista de opciones -->
+            <div class="mt-8">
+              <div class="flow-root">
+                <ul role="list" class="-my-6 divide-y divide-gray-200">
+                  <li class="flex py-4">
+                    <a href="#" class="flex items-center w-full text-gray-700 hover:text-indigo-600">
+                      <i class="pi pi-shopping-bag mr-3 text-lg"></i>
+                      <span>Mis compras</span>
+                    </a>
+                  </li>
+
+                  <li class="flex py-4">
+                    <a href="#" class="flex items-center w-full text-gray-700 hover:text-indigo-600">
+                      <i class="pi pi-credit-card mr-3 text-lg"></i>
+                      <span>Medios de pago</span>
+                    </a>
+                  </li>
+                  <li class="flex py-4">
+                    <a href="#" class="flex items-center w-full text-gray-700 hover:text-indigo-600">
+                      <i class="pi pi-map-marker mr-3 text-lg"></i>
+                      <span>Direcciones</span>
+                    </a>
+                  </li>
+
+                  <li class="flex py-4">
+                    <a href="#" class="flex items-center w-full text-gray-700 hover:text-indigo-600">
+                      <i class="pi pi-user mr-3 text-lg"></i>
+                      <span>Mi cuenta</span>
+                    </a>
+                  </li>
+
+                </ul>
+              </div>
+            </div>
+
+            <!-- Sección deportes -->
+
+          </div>
+
+          <!-- Pie del menú -->
+          <div class="border-t border-gray-200 px-4 py-6 sm:px-6">
+            <button
+              (click)="logout()"
+              class="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-xs hover:bg-indigo-700"
+            >
+              <i class="pi pi-sign-out mr-2"></i>
+              Cerrar sesión
+            </button>
+            <div class="mt-4 flex justify-center text-center text-sm text-gray-500">
+              <p>
+                ¿Necesitas ayuda?
+                <a href="#" class="font-medium text-indigo-600 hover:text-indigo-500">
+                  Contacta con nosotros
+                </a>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+}

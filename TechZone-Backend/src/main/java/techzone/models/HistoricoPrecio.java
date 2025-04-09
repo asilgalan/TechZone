@@ -46,9 +46,9 @@ public class HistoricoPrecio {
     @Column(name = "motivo", nullable = false)
     private Motivo motivo;
 
-    @OneToMany
-    @JoinColumn(name="id_usuario")
-    private List<Usuario> usuario;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "id_usuario")
+    private Usuario usuario;
 
     private String notas;
 
