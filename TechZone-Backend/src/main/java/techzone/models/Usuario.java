@@ -29,7 +29,6 @@ public class Usuario {
     @Size(min = 2, max = 50)
     @Column(nullable = false)
     private String nombre;
-    @NotBlank()
 
     @Size(min = 2, max = 100)
     @Column(nullable = false)
@@ -39,35 +38,33 @@ public class Usuario {
     @Column(unique = true,nullable = false)
     private String email;
     @NotBlank()
-    @Column(unique = true,nullable = false)
+    @Column()
     private String usuario;
-    @NotBlank()
-    @Column(nullable = false)
+
     private String telefono;
     @NotBlank()
     @Size(min = 6)
     @Column(nullable = false)
     private String password;
-    @NotBlank()
-    @Column(nullable = false,name = "ip_registro")
+
+    @Column(name = "ip_registro")
     private String ipRegistro;
-    @NotNull
+
     @Column(name = "fecha_nacimiento")
     private Date fechaNacimiento;
 
-    @NotNull
+
     @Column(name="fecha_registro")
     private Date fechaRegistro;
-    @NotNull
+
     @Column(name="ultima_actualizacion")
     private Date ultimaActualizacion;
-
+    @Column(name="terminos_condiciones")
+     private boolean terminosyCondiciones=false;
     @Column(name="acepta_marketing")
-    private Boolean aceptaMarketing=false;
+    private boolean aceptaMarketing=false;
 
-    @NotNull()
-    @Column(name="cuenta_verificada")
-    private Boolean cuentaVerificada=false;
+
     @ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
     @CollectionTable(name = "usuario_roles",
@@ -77,17 +74,14 @@ public class Usuario {
     private Set<Roles> roles;
 
 
-    @Override
-    public String toString() {
-        return super.toString();
-
-    }
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
     private List<Direccion> direcciones;
 
     @PrePersist
-    public void prePersist() {setFechaRegistro(new Date());
+    public void prePersist() {
+        setFechaRegistro(new Date());
+        setUsuario(getNombre()+" "+getApellidos().split(" ")[0]);
         setUltimaActualizacion(new Date());}
 
     @PreUpdate

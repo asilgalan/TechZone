@@ -1,3 +1,4 @@
+import { User } from './../interfaces/Usuario.interface';
 import { AuthResponse } from './../interfaces/LoginInterface';
 import { HttpClient } from '@angular/common/http';
 import { computed, inject, Injectable, signal } from '@angular/core';
@@ -27,11 +28,11 @@ export class AuthService {
     if (this._authStatus() === 'checking') return 'checking';
     return this._user() ? 'authenticated' : 'not-authenticated';
   });
+
   constructor() {
-    // Verificar estado de autenticación al iniciar si hay token
+
     const token = this._token();
     if (token) {
-      console.log('Token encontrado en localStorage:', token);  // Asegúrate de que se obtiene el token correctamente
       this.checkAuthStatus().subscribe();
     } else {
       this._authStatus.set('not-authenticated');
@@ -50,6 +51,16 @@ export class AuthService {
       );
   }
 
+  register(nombre: string, apellidos: string, email: string, password: string, terminosyCondiciones: boolean,aceptaMarketing:boolean): Observable<any> {
+    return this.http.post(`${baseUrl}/usuarios/register`, {
+      nombre,
+      apellidos,
+      email,
+      password,
+      terminosyCondiciones,
+      aceptaMarketing
+    });
+  }
   checkAuthStatus(): Observable<boolean> {
     const token = localStorage.getItem("token");
 

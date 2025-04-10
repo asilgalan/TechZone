@@ -51,7 +51,7 @@ public class UsuarioController {
         return ResponseEntity.notFound().build();
     }
 
-    @PostMapping
+    @PostMapping("/register")
     public ResponseEntity<?> AddUsuario(@RequestBody Usuario usuario) {
         usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
         if(usuario.getRoles() == null || usuario.getRoles().isEmpty()) {

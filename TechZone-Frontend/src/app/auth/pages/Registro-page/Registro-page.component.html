@@ -14,66 +14,102 @@
 
 
   <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-sm">
-    <form class="space-y-6" action="#" method="POST">
+    <form class="space-y-6" [formGroup]="registerForm" (ngSubmit)="onSubmit()" method="POST">
+
+
       <div>
         <label for="nombre" class="block text-sm font-medium text-gray-900">Nombre*</label>
         <div class="mt-2">
-          <input type="text" name="nombre" id="nombre"
-          placeholder="Nombre"
+          <input type="text" formControlName="nombre" id="nombre" placeholder="Nombre"
             class="block w-full rounded-md bg-white px-3 py-2 text-base text-gray-900 outline outline-1 outline-gray-300 placeholder-gray-400 focus:outline-2 focus:outline-offset-2 focus:outline-indigo-400 sm:text-sm">
         </div>
+        @if (formUtils.isValidField(registerForm,'nombre')) {
+          <span class="text-sm text-red-500">
+             {{formUtils.getFieldErros(registerForm,'nombre')}}
+          </span>
+        }
       </div>
       <div>
         <label for="apellidos" class="block text-sm font-medium text-gray-900">Apellidos*</label>
         <div class="mt-2">
-          <input type="text" name="apellidos" id="apellidos"
+          <input type="text" formControlName="apellidos" id="apellidos"
           placeholder="Apellidos"
             class="block w-full rounded-md bg-white px-3 py-2 text-base text-gray-900 outline-1 outline-gray-300 placeholder-gray-400 focus:outline-2 focus:outline-offset-2 focus:outline-indigo-400 sm:text-sm">
         </div>
+        @if (formUtils.isValidField(registerForm,'apellidos')) {
+          <span class="text-sm text-red-500">
+             {{formUtils.getFieldErros(registerForm,'apellidos')}}
+          </span>
+        }
       </div>
       <div>
-        <label for="email" class="block text-sm font-medium text-gray-900">Email</label>
+        <label for="email" class="block text-sm font-medium text-gray-900">Email*</label>
         <div class="mt-2">
-          <input type="email" name="email" id="email" autocomplete="email"
+          <input type="email" formControlName="email" id="email" autocomplete="email"
           placeholder="Email"
             class="block w-full rounded-md bg-white px-3 py-2 text-base text-gray-900 outline outline-1 outline-gray-300 placeholder-gray-400 focus:outline-2 focus:outline-offset-2 focus:outline-indigo-400 sm:text-sm">
         </div>
+        @if (formUtils.isValidField(registerForm,'email')) {
+          <span class="text-sm text-red-500">
+             {{formUtils.getFieldErros(registerForm,'email')}}
+          </span>
+        }
       </div>
       <div>
-        <label for="contrasenia" class="block text-sm font-medium text-gray-900">Contraseña*</label>
+        <label for="password" class="block text-sm font-medium text-gray-900">Contraseña*</label>
         <div class="mt-2">
-          <input type="password" name="contrasenia" id="contrasenia"
+          <input type="password" formControlName="password" id="password"
           placeholder="Contraseña"
             class="block w-full rounded-md bg-white px-3 py-2 text-base text-gray-900 outline outline-1 outline-gray-300 placeholder-gray-400 focus:outline-2 focus:outline-offset-2 focus:outline-indigo-600 sm:text-sm">
         </div>
+        @if (formUtils.isValidField(registerForm,'password')) {
+          <span class="text-sm text-red-500">
+             {{formUtils.getFieldErros(registerForm,'password')}}
+          </span>
+        }
       </div>
       <div>
-        <label for="repetirContrasenia" class="block text-sm font-medium text-gray-900">Repetir Contraseña*</label>
+        <label for="confirmPassword" class="block text-sm font-medium text-gray-900">Repetir Contraseña*</label>
         <div class="mt-2">
-          <input type="password" name="repetirContrasenia" id="repetirContrasenia"
+          <input type="password" formControlName="confirmPassword" id="confirmPassword"
           placeholder="Repetir contraseña"
             class="block w-full rounded-md bg-white px-3 py-2 text-base text-gray-900 outline outline-1 outline-gray-300 placeholder-gray-400 focus:outline-2 focus:outline-offset-2 focus:outline-indigo-600 sm:text-sm">
         </div>
+        @if(registerForm.errors?.['passwordnoequal'] && submit()==true){
+          <span class="text-sm text-red-500">
+             Contraseña distintas
+          </span>
+        } @else if (formUtils.isValidField(registerForm,'confirmPassword')) {
+          <span class="text-sm text-red-500">
+             {{formUtils.getFieldErros(registerForm,'confirmPassword')}}
+          </span>
+        }
       </div>
       <div>
         <div class="flex items-start">
-          <input type="checkbox" id="cookies" name="terminosyCondiciones"
+          <input type="checkbox" id="terminosyCondiciones" formControlName="terminosyCondiciones"
             class="h-4 w-4 rounded border-gray-300 text-gray-600 focus:ring-indigo-600 checked:bg-indigo-600 checked:border-indigo-600">
           <label for="terminosyCondiciones" class="ml-3 text-sm text-gray-900">
             He leído y acepto
             <a href="" class="font-bold border-b">la política de privacidad</a>
           </label>
-        </div>
 
+        </div>
+        @if (formUtils.isValidField(registerForm,'terminosyCondiciones')) {
+          <span class="text-sm text-red-500">
+             Debe de aceptar las condiciones de uso
+          </span>
+        }
       </div>
       <div>
         <div class="flex items-start">
-          <input type="checkbox" id="marketing" name="marketing"
+          <input type="checkbox" id="aceptaMarketing" formControlName="aceptaMarketing"
             class="h-4 w-4 rounded text-7xl border-gray-300 bg-blue-500 focus:ring-indigo-600">
-          <label for="marketing" class="ml-3 text-sm text-gray-900">Deseo recibir comunicaciones via <strong>email</strong></label>
+          <label for="aceptaMarketing" class="ml-3 text-sm text-gray-900">Deseo recibir comunicaciones via <strong>email</strong></label>
         </div>
       </div>
       <div>
+
         <button type="submit"
         class="flex w-full justify-center rounded-md border border-indigo-600 ring-indigo-600 px-3 py-2 text-sm font-semibold text-black shadow hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-400">
         Registrarte
