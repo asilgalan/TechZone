@@ -1,27 +1,85 @@
-import { Injectable } from '@angular/core';
-import { Producto } from '../interfaces/Producto.interface';
+import { Productos } from './../interfaces/Producto.interface';
+import { inject, Injectable, signal } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { catchError, Observable, tap, throwError } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 @Injectable({providedIn: 'root'})
 export class ProductoService {
-  private favorites: Producto[] = [];
+  private http = inject(HttpClient);
 
-  addToFavorites(product: Producto): void {
-    if (!this.isFavorite(product.id)) {
-      product.isFavorite = true;
-      this.favorites.push(product);
-    }
+  private _favoritos = signal<any[]>([]);
+  public favoritos = this._favoritos.asReadonly();
+
+  productos(): Observable<Productos[]> {
+    return this.http.get<Productos[]>(`${environment.base_url}/productos/todos`).pipe(
+      tap(resp => console.log(resp))
+    );
   }
 
-  removeFromFavorites(productId: number): void {
-    this.favorites = this.favorites.filter(item => item.id !== productId);
+  addFavorito(idUsuario: number, idProducto: number): Observable<any> {
+    const body = {
+      idUsuario: idUsuario,
+      idProducto: idProducto
+    };
+
+    return this.http.post<any>(`${environment.base_url}/productos/guardarFavoritos`, body).pipe(
+      tap(() => {
+
+        this.favoritosUsuario(idUsuario).subscribe();
+      }),
+      catchError(error => {
+        console.error('Error en la solicitud:', error);
+        return throwError(() => new Error('Error al guardar favorito'));
+      })
+    );
   }
 
-  getFavorites(): Producto[] {
-    return this.favorites;
+  favoritosUsuario(id: number): Observable<any[]> {
+    return this.http.get<any[]>(`${environment.base_url}/productos/favoritoUsuario/${id}`).pipe(
+      tap(resp => {
+        console.log(resp);
+
+        this._favoritos.set(resp);
+      }),
+      catchError(error => {
+        console.error("Error en la solicitud", error);
+        return throwError(() => new Error('Error al solicitar favorito de cada usuario'));
+      })
+    );
   }
 
-  isFavorite(productId: number): boolean {
-    return this.favorites.some(item => item.id === productId);
-  }
+  eliminarFavorito(id: number): Observable<any> {
+    return this.http.get(`${environment.base_url}/productos/eliminarFavorito/${id}`).pipe(
 
+      catchError(error => {
+        console.error("Error en la solicitud", error);
+        return throwError(() => new Error('Error al eliminar favorito'));
+      })
+    );
+  }
+// Método para alternar estado
+toggleFavorito(idProducto: number, idUsuario: number): Observable<any> {
+  const favoritoExistente = this._favoritos().find(f => f.producto.idProducto === idProducto);
+
+  if (favoritoExistente) {
+    return this.eliminarFavorito(favoritoExistente.idFavorito).pipe(
+      tap(() => this._favoritos.update(favs =>
+        favs.filter(f => f.producto.idProducto !== idProducto)
+      )
+    ));
+  } else {
+    return this.addFavorito(idUsuario, idProducto).pipe(
+      tap((nuevoFavorito) => {
+        this._favoritos.update(favs => [...favs, nuevoFavorito]);
+      })
+    );
+  }
+}
+
+
+
+  esFavorito(idProducto: number): boolean {
+    return this._favoritos().some(f => f.producto.idProducto === idProducto);
+  }
 }

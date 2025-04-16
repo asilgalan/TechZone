@@ -5,9 +5,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import techzone.models.Enums.Motivo;
+import techzone.models.enums.Motivo;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 

@@ -3,7 +3,7 @@ package techzone.models;
 import jakarta.persistence.*;
 
 import lombok.*;
-import techzone.models.Enums.OrigenVisita;
+import techzone.models.enums.OrigenVisita;
 
 import java.time.LocalDateTime;
 

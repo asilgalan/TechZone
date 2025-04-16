@@ -1,9 +1,9 @@
+import { User } from "./Usuario.interface";
+
 export interface AuthResponse {
-  roles:      string;
-  authStatus: string;
-  usuario:    string;
-  id:         string;
-  nombre:     string;
-  email:      string;
-  token:      string;
+  token: string;
+  user:  User;
+  roles: string[];
 }
+
+

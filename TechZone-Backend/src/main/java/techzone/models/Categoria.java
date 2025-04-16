@@ -35,6 +35,7 @@ public class Categoria {
     @Column(nullable = false)
     private String descripcion;
 
+    @Column(name="imagen_url")
     private String imagenUrl;
     private String icono;
 

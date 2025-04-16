@@ -1,4 +1,4 @@
-package techzone.models.Enums;
+package techzone.models.enums;
 
 public enum Motivo {
     Ajuste,

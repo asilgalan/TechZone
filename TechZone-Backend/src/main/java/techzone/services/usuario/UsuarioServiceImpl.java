@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import techzone.models.Usuario;
+import techzone.models.dto.UsuarioDto;
 import techzone.repositories.IUsuarioRepository;
 
 import java.util.List;
@@ -41,5 +42,10 @@ public class UsuarioServiceImpl implements IUsuarioService {
             usuarioRepository.deleteById(id);
         }
 
+    }
+
+    @Override
+    public Optional<Usuario> findByEmail(String email) {
+        return usuarioRepository.findByEmail(email);
     }
 }

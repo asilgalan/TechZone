@@ -4,7 +4,7 @@ import { GoogleSignInButtonComponent } from "../../components/inicioConGoogle/Go
 import { AuthService } from '../../services/authService.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FormUtilidades } from '../../../utils/form-utilidades';
-import { tap } from 'rxjs';
+import { delay, tap } from 'rxjs';
 
 @Component({
   selector: 'app-registro-page',
@@ -15,6 +15,7 @@ export class RegistroPageComponent {
 
   autService=inject(AuthService)
   router=inject(Router)
+  hasError=signal(false);
   formUtils=FormUtilidades;
     submit=signal(false);
   fb=inject(FormBuilder);
@@ -34,18 +35,22 @@ export class RegistroPageComponent {
   })
 
   onSubmit() {
+
+    this.submit.set(true);
     if (this.registerForm.invalid) {
       this.registerForm.markAllAsTouched();
       return;
     }
 
-    const { email, password, nombre, apellidos, terminosyCondiciones,aceptaMarketing } = this.registerForm.value;
+    const { email, password, nombre, apellidos, terminosyCondiciones, aceptaMarketing } = this.registerForm.value;
 
-    this.autService.register(nombre, apellidos, email, password, terminosyCondiciones,aceptaMarketing)
-      .subscribe(() => {
-        this.router.navigateByUrl("/auth/login");
-      });
+    this.autService.register(nombre, apellidos, email, password, terminosyCondiciones, aceptaMarketing)
+      .pipe(
+        tap(() => this.hasError.set(true)),
+        delay(3000),
+        tap(() => this.router.navigateByUrl("/auth/login"))
+      )
+      .subscribe();
   }
-
 
 }

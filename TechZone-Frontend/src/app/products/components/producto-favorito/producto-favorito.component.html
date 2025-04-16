@@ -26,26 +26,26 @@
             <div class="mt-8">
               <div class="flow-root">
                 <ul class="-my-6 divide-y divide-gray-200">
-                  @for (item of favoriteItems; track $index) {
+                  @for (item of favoritos(); track $index) {
                   <li class="flex py-6">
                     <div class="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
-                      <img [src]="item.image" [alt]="item.name" class="h-full w-full object-cover">
+                      <img src="../../../../assets/productos/{{item.producto.imagenPrincipal}}" [alt]="item.name" class="h-full w-full object-cover">
                     </div>
 
                     <div class="ml-4 flex flex-1 flex-col">
                       <div>
                         <div class="flex justify-between text-base font-medium text-gray-900">
-                          <h3>{{item.name}}</h3>
-                          <p class="ml-4">{{item.price | currency}}</p>
+                          <h3>{{item.producto.nombre}}</h3>
+                          <p class="ml-4">{{item.producto.precio | currency:'EUR'}}</p>
                         </div>
-                        <p class="mt-1 text-sm text-gray-500">{{item.category}}</p>
+                        <p class="mt-1 text-sm text-gray-500">{{item.producto.categoria.nombre}}</p>
                       </div>
                       <div class="flex flex-1 items-end justify-between text-sm">
                         <div class="flex space-x-4">
-                          <button (click)="moveToCart(item)" class="font-medium text-indigo-600 hover:text-indigo-500">
+                          <!--  <button (click)="eliminarFavorito(item.id)" class="font-medium text-indigo-600 hover:text-indigo-500">
                             Añadir al carrito
-                          </button>
-                          <button (click)="removeFavorite(item)" class="font-medium text-red-600 hover:text-red-500">
+                          </button> -->
+                          <button (click)="eliminarFavorito(item.idFavorito)" class="font-medium text-red-600 hover:text-red-500 cursor-pointer">
                             Eliminar
                           </button>
                         </div>
@@ -53,7 +53,7 @@
                     </div>
                   </li>
                 }
-                @if(favoriteItems.length ===0){
+                @if(favoritos().length==0){
                   <div class="text-2xl font-bold">No tienes Productos en Favoritos</div>
 
                 }

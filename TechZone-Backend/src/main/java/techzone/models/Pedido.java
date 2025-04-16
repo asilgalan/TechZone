@@ -3,8 +3,8 @@ package techzone.models;
 
 import jakarta.persistence.*;
 import lombok.*;
-import techzone.models.Enums.EstadoEnvio;
-import techzone.models.Enums.MetodoPago;
+import techzone.models.enums.EstadoEnvio;
+import techzone.models.enums.MetodoPago;
 
 import java.time.LocalDateTime;
 

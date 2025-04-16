@@ -15,7 +15,12 @@
 
   <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-sm">
     <form class="space-y-6" [formGroup]="registerForm" (ngSubmit)="onSubmit()" method="POST">
+      @if(hasError()){
+        <div role="success" class="alert alert-success">
 
+          <span>Te has registrado con exito</span>
+        </div>
+      }
 
       <div>
         <label for="nombre" class="block text-sm font-medium text-gray-900">Nombre*</label>
@@ -75,7 +80,7 @@
           placeholder="Repetir contraseña"
             class="block w-full rounded-md bg-white px-3 py-2 text-base text-gray-900 outline outline-1 outline-gray-300 placeholder-gray-400 focus:outline-2 focus:outline-offset-2 focus:outline-indigo-600 sm:text-sm">
         </div>
-        @if(registerForm.errors?.['passwordnoequal'] && submit()==true){
+        @if(registerForm.errors?.['passwordnoequal'] && submit()){
           <span class="text-sm text-red-500">
              Contraseña distintas
           </span>

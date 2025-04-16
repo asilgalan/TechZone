@@ -1,13 +1,10 @@
 import {  CurrencyPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, EventEmitter, input, Input, Output, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, EventEmitter, inject, input, Input, OnInit, Output, signal } from '@angular/core';
+import { ProductoService } from '../../services/Producto.service';
+import { AuthService } from '../../../auth/services/authService.service';
+import { catchError, tap } from 'rxjs';
 
-interface FavoriteItem {
-  id: number;
-  name: string;
-  price: number;
-  image: string;
-  category: string;
-}
+
 @Component({
   selector: 'producto-favorito',
   standalone:true,
@@ -15,37 +12,57 @@ interface FavoriteItem {
   templateUrl: './producto-favorito.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProductoFavoritoComponent {
+export class ProductoFavoritoComponent implements OnInit {
+
 
   @Input() isOpen = false;
   @Output() closeFavorites = new EventEmitter<void>();
+  productoService=inject(ProductoService);
+  favoritos=signal<any[]>([]);
+   authService=inject(AuthService);
+
+   userId = computed(() => this.authService.user()?.idUsuario||null);
+
+ngOnInit(): void {
+
+  this.cargarFavoritos();
+}
 
 
 
-  favoriteItems: FavoriteItem[] = [
-      {
-        id: 1,
-        name: 'Throwback Hip Bag',
-        price: 90.00,
-       category:"ropa",
-        image: 'https://tailwindcss.com/plus-assets/img/ecommerce-images/shopping-cart-page-04-product-01.jpg'
-      },
-      {
-        id: 2,
-        name: 'Medium Stuff Satchel',
-        price: 32.00,
-        category:"ropa",
-        image: 'https://tailwindcss.com/plus-assets/img/ecommerce-images/shopping-cart-page-04-product-02.jpg'
-      }
-    ];
-
-
-  removeFavorite(item: FavoriteItem): void {
-    this.favoriteItems = this.favoriteItems.filter(fav => fav.id !== item.id);
+  cargarFavoritos(){
+    const id = this.userId();
+  if (!this.userId()) {
+    console.warn('No hay usuario autenticado');
+    this.favoritos.set([]);
+    return;
   }
 
-  moveToCart(item: FavoriteItem): void {
-    // Implementa lógica para mover a carrito
-    this.removeFavorite(item);
+    this.productoService.favoritosUsuario(this.userId()!).pipe(
+      tap((resp) => this.favoritos.set(resp)),
+
+    ).subscribe();
+
+
+  }
+
+  eliminarFavorito(id:number): void {
+    this.productoService.eliminarFavorito(id).pipe(
+
+      tap(() =>{
+
+        this.favoritos.update(favoritos =>
+          favoritos.filter(fav => fav.idFavorito !== id)
+        );
+      })
+
+    )
+
+    .subscribe();
+
+  }
+
+  moveToCart(): void {
+
   }
 }

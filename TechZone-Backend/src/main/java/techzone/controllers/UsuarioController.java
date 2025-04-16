@@ -4,24 +4,20 @@ package techzone.controllers;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.security.Keys;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import techzone.models.Enums.Roles;
+import techzone.models.enums.Roles;
 import techzone.models.Usuario;
+import techzone.models.dto.AuthResponse;
+import techzone.models.dto.UsuarioDto;
 import techzone.services.usuario.IUsuarioService;
 import techzone.services.usuario.UsuarioDetailService;
 
-import java.io.IOException;
-import java.security.Key;
 import java.util.*;
 
-import static io.jsonwebtoken.Jwts.*;
 import static techzone.security.TokenJwtConfig.SECRET_KEY;
 
 
@@ -37,11 +33,13 @@ public class UsuarioController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    //obtener todos los usuarios
     @GetMapping("/usuarios")
     public List<Usuario> obtenerUsuarios() {
         return usuarioService.obtenerUsuarios();
     }
 
+     //obtener datos del usuario
     @GetMapping("/{id}")
     public ResponseEntity<?> obtenerPorId(@PathVariable long id) {
         Optional<Usuario> UsuarioPorid=usuarioService.obtenerPorId(id);
@@ -51,6 +49,7 @@ public class UsuarioController {
         return ResponseEntity.notFound().build();
     }
 
+    //para el registro del usuario
     @PostMapping("/register")
     public ResponseEntity<?> AddUsuario(@RequestBody Usuario usuario) {
         usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
@@ -61,6 +60,7 @@ public class UsuarioController {
         return ResponseEntity.status(HttpStatus.CREATED).body(usuarioService.guardarUsuario(usuario));
     }
 
+    //para actualizar el usuario
     @PutMapping("/{id}")
     public ResponseEntity<?> ActualizarUsuario(@PathVariable long id, @RequestBody Usuario usuario) {
         Optional<Usuario> UsuarioPorid = usuarioService.obtenerPorId(id);
@@ -72,6 +72,7 @@ public class UsuarioController {
         return ResponseEntity.notFound().build();
     }
 
+    //para borrar el usuario
     @DeleteMapping("/{id}")
     public ResponseEntity<?> eliminarUsuario(@PathVariable long id) {
         Optional<Usuario> UsuarioPorid = usuarioService.obtenerPorId(id);
@@ -82,22 +83,35 @@ public class UsuarioController {
         return ResponseEntity.notFound().build();
     }
 
+
+
+    //para ver si mi token sigue valido
     @GetMapping("/check-status")
     public ResponseEntity<?> checkTokenStatus(@RequestHeader("Authorization") String authHeader) {
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(Map.of("status", "not-authenticated", "message", "Token no proporcionado"));
+                    .body(Map.of("status", "not-authenticated", "message", "el token no se encuentra"));
         }
+
         String token = authHeader.replace("Bearer ", "");
         try {
             Claims claims = Jwts.parser().setSigningKey(SECRET_KEY)
                     .build()
                     .parseClaimsJws(token)
                     .getBody();
-            return ResponseEntity.ok(Map.of("status", "authenticated"));
+
+            String email = claims.getSubject();
+            Optional<Usuario> usuario = usuarioService.findByEmail(email);
+
+            UsuarioDto userDto=new UsuarioDto(usuario.get());
+            AuthResponse response = new AuthResponse(token, userDto,usuario.get().getRoles());
+
+            return ResponseEntity.ok(response);
+
         } catch (JwtException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(Map.of("status", "not-authenticated", "message", e.getMessage()));
         }
     }
+
 }

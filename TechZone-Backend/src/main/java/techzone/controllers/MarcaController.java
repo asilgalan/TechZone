@@ -21,6 +21,7 @@ public class MarcaController {
         return marcaService.todasLasMarcas();
 
     }
+
     @PostMapping("/marca")
     public ResponseEntity<?> guardarMarca(@RequestBody Marca marca){
 

@@ -22,15 +22,12 @@ public class ProductoProveedor {
     private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(nullable = false,name="id_proveedor")
     private Proveedor proveedor;
 
     @OneToMany
     @JoinColumn(name="id_producto")
     private List<Producto> producto;
-
-    @NotNull
-    @Column(name="codigo_proveedor")
-    private String codigoProveedor;
 
     @NotNull
     @Column(nullable = false,name="precio_compra")

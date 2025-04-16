@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import techzone.models.Enums.Aplicacion;
+import techzone.models.enums.Aplicacion;
 
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -59,11 +59,8 @@ public class Descuento {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_usuario")
     private Usuario usuario;
-
     private Boolean activo;
-
     private LocalDateTime fechaCreacion;
-
     @PrePersist
     public void prePersist() {
         setFechaCreacion(LocalDateTime.now());

@@ -6,25 +6,49 @@
 
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 px-4 sm:px-0">
       <!-- Producto 1 -->
+       @for (item of producto(); track $index) {
+
       <div class="flex flex-col h-full bg-white rounded-xl border border-gray-200 transition-all hover:border-indigo-400 hover:shadow-xl hover:shadow-purple-100/50 hover:-translate-y-1">
-        <div class="relative pt-[70%] overflow-hidden rounded-t-xl">
-          <!--  -->
-          <img src="https://images.unsplash.com/photo-1587829741301-dc798b83add3?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+        <div class="relative aspect-[8/6]  overflow-hidden rounded-t-xl">
+
+            <!--  src="https://images.unsplash.com/photo-1587829741301-dc798b83add3?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" -->
+          <img src="../../../../assets/productos/{{item.imagenPrincipal}}"
+
                alt="Teclado mecánico gaming RGB"
-               class="absolute top-0 left-0 w-full h-full object-cover">
+               class="absolute  top-0 left-0 w-full h-full object-contain object-center">
           <!-- Botón Favorito -->
+
           <div class="absolute top-2 right-2 flex space-x-2">
-            <span class="bg-green-500 text-white text-center text-xs pt-2 font-bold px-2  rounded-full">NUEVO</span>
-            <button class="text-gray-400  hover:text-red-600 transition-colors bg-white rounded-full  p-1">
+            @if (item.oferta==true) {
+            <span class="bg-green-500 text-white text-center text-xs pt-2 font-bold px-2  rounded-full">
+              NUEVO
+            </span>
+          }
+          @else if(item.nuevo==true){
+
+          }
+          @if(!authService.user()){
+            <button routerLink="/auth/login"  class="text-gray-400  hover:text-red-600 transition-colors bg-white rounded-full  p-1">
               <i class="fas fa-heart text-lg"></i>
             </button>
+          }@else {
+            <button
+            (click)="addFavorito(item.idProducto, authService.user()?.idUsuario!)"
+            class="text-gray-400 hover:text-red-600 transition-colors bg-white rounded-full p-1"
+            [disabled]="!authService.user()?.idUsuario"
+            [class.text-red-600]="productoService.esFavorito(item.idProducto)">
+            <i class="fas fa-heart text-lg"></i>
+          </button>
+          }
+
           </div>
         </div>
         <div class="flex-grow p-4 flex flex-col">
           <h3 class="text-lg font-bold text-gray-900 group-hover:text-indigo-600 transition-colors">
-            Teclado HyperX Alloy
+            {{item.nombre}}
+
           </h3>
-          <p class="mt-1 text-sm text-gray-600">Switches Red, RGB Chroma</p>
+          <p class="mt-1 text-sm text-gray-600">{{item.descripcionCorta}}</p>
 
           <div class="mt-3 flex items-center justify-between">
             <div class="flex items-center bg-yellow-50 px-2 py-1 rounded-full">
@@ -34,27 +58,33 @@
                 <span class="text-xs text-gray-500 ml-1">(124)</span>
               </div>
             </div>
+            @if(item.precio>60){
+
             <span class="text-xs bg-blue-50 text-gray-700 px-2 py-1 rounded-full">ENVÍO GRATIS</span>
+          }
           </div>
 
           <div class="mt-auto pt-4 flex justify-between items-end">
             <div>
-              <p class="text-lg font-bold text-black">$89.99</p>
-              <p class="text-xs text-gray-400 line-through">$109.99</p>
+              <p class="text-lg font-bold text-black">{{item.coste |currency:'EUR'}}</p>
+              <p class="text-xs text-gray-400 line-through">{{item.precio |currency:'EUR' }}<p>
             </div>
-            <a href="#" class="bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold py-2 px-4 rounded-lg transition-colors shadow-md hover:shadow-lg">
+            <a href="" class="bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold py-2 px-4 rounded-lg transition-colors shadow-md hover:shadow-lg">
               COMPRAR
             </a>
           </div>
         </div>
       </div>
-<!-- fin de la card-->
 
+    }
+
+<!-- fin de la card-->
+<!--
       <div class="flex flex-col h-full bg-white rounded-xl border border-gray-200 transition-all hover:border-indigo-400 hover:shadow-xl hover:shadow-purple-100/50 hover:-translate-y-1">
-        <div class="relative pt-[70%] overflow-hidden rounded-t-xl">
-          <img src="https://images.unsplash.com/photo-1527814050087-3793815479db?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+        <div class="relative pt-[80%] overflow-hidden rounded-t-xl">
+          <img src="../../../../assets/productos/1990-forgeon-vendetta-raton-gaming-rgb-16000dpi-negro-comprar.webp"
                alt="Ratón gaming profesional"
-               class="absolute top-0 left-0 w-full h-full object-cover">
+              class="absolute  top-0 left-0 w-full h-full object-contain object-center ">
 
           <div class="absolute top-2 right-2 flex space-x-2">
             <span class="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">-15%</span>
@@ -96,9 +126,9 @@
 
       <div class="flex flex-col h-full bg-white rounded-xl border border-gray-200 transition-all hover:border-indigo-400 hover:shadow-xl hover:shadow-purple-100/50 hover:-translate-y-1">
         <div class="relative pt-[70%] overflow-hidden rounded-t-xl">
-          <img src="../../../../assets/rezwan-ahmed-C1uFlpNdQh0-unsplash.jpg"
+          <img src="../../../../assets/productos/hp-elitebook.webp"
                alt="Auriculares gaming con micrófono"
-               class="absolute top-0 left-0 w-full h-full object-cover">
+               class="absolute top-0 left-0 w-full h-full object-contain object-center">
 
           <div class="absolute top-2 right-2 flex space-x-2">
             <span class="bg-blue-500 text-white text-xs font-bold px-2 py-1 rounded-full">TOP</span>
@@ -140,9 +170,9 @@
 
       <div class="flex flex-col h-full bg-white rounded-xl border border-gray-200 transition-all hover:border-indigo-400 hover:shadow-xl hover:shadow-purple-100/50 hover:-translate-y-1">
         <div class="relative pt-[70%] overflow-hidden rounded-t-xl">
-          <img src="https://images.unsplash.com/photo-1547036967-23d11aacaee0?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+          <img src="../../../../assets/productos/1123-msi-g27cq4-e2-27-led-wqhd-170hz-freesync-premium-curva.webp"
                alt="Monitor gaming curvado"
-               class="absolute top-0 left-0 w-full h-full object-cover">
+               class="absolute top-0 left-0 w-full h-full object-contain object-center">
 
           <div class="absolute top-2 right-2 flex space-x-2">
             <span class="bg-purple-500 text-white text-xs font-bold px-2 py-1 rounded-full">OFERTA</span>
@@ -182,9 +212,9 @@
       </div>
       <div class="flex flex-col h-full bg-white rounded-xl border border-gray-200 transition-all hover:border-indigo-400 hover:shadow-xl hover:shadow-purple-100/50 hover:-translate-y-1">
         <div class="relative pt-[70%] overflow-hidden rounded-t-xl">
-          <img src="https://images.unsplash.com/photo-1587829741301-dc798b83add3?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+          <img src="../../../../assets/productos/1186-apple-airpods-4-con-cancelacion-activa-de-ruido-auriculares-inalambricos-con-estuche-de-carga-comprar.webp"
                alt="Teclado mecánico gaming RGB"
-               class="absolute top-0 left-0 w-full h-full object-cover">
+               class="absolute top-0 left-0 w-full h-full object-contain object-center">
 
           <div class="absolute top-2 right-2 flex space-x-2">
             <span class="bg-green-500 text-white text-xs pt-1 font-bold px-2 py-1 rounded-full">NUEVO</span>
@@ -226,9 +256,9 @@
 
       <div class="flex flex-col h-full bg-white rounded-xl border border-gray-200 transition-all hover:border-indigo-400 hover:shadow-xl hover:shadow-purple-100/50 hover:-translate-y-1">
         <div class="relative pt-[70%] overflow-hidden rounded-t-xl">
-          <img src="https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+          <img src="../../../../assets/productos/1348-pccom-ready-intel-core-i5-12400f-32-gb-1tb-ssd-rtx-4060-opiniones.webp"
                alt="Ratón gaming profesional"
-               class="absolute top-0 left-0 w-full h-full object-cover">
+               class="absolute top-0 left-0 w-full h-full object-contain">
 
           <div class="absolute top-2 right-2 flex space-x-2">
             <span class="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">-15%</span>
@@ -270,9 +300,9 @@
 
       <div class="flex flex-col h-full bg-white rounded-xl border border-gray-200 transition-all hover:border-indigo-400 hover:shadow-xl hover:shadow-purple-100/50 hover:-translate-y-1">
         <div class="relative pt-[70%] overflow-hidden rounded-t-xl">
-          <img src="../../../../assets/rezwan-ahmed-C1uFlpNdQh0-unsplash.jpg"
+          <img src="../../../../assets/productos/1144-forgeon-nimbus-pro-ssd-m2-1tb-nvme-pcie-40-gen4-comprar.webp"
                alt="Auriculares gaming con micrófono"
-               class="absolute top-0 left-0 w-full h-full object-cover">
+               class="absolute top-0 left-0 w-full h-full object-contain object-center">
 
           <div class="absolute top-2 right-2 flex space-x-2">
             <span class="bg-blue-500 text-white text-xs font-bold px-2 py-1 rounded-full">TOP</span>
@@ -310,12 +340,11 @@
         </div>
       </div>
 
-
       <div class="flex flex-col h-full bg-white rounded-xl border border-gray-200 transition-all hover:border-indigo-400 hover:shadow-xl hover:shadow-purple-100/50 hover:-translate-y-1">
-        <div class="relative pt-[70%] overflow-hidden rounded-t-xl">
-          <img src="https://images.unsplash.com/photo-1547036967-23d11aacaee0?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+        <div class="relative pt-[60%] overflow-hidden rounded-t-xl">
+          <img src="../../../../assets/productos/1967-xiaomi-redmi-note-13-8-512gb-negro-libre.webp"
                alt="Monitor gaming curvado"
-               class="absolute top-0 left-0 w-full h-full object-cover">
+               class="absolute top-0 left-0 w-full h-full object-contain object-center">
 
           <div class="absolute top-2 right-2 flex space-x-2">
             <span class="bg-purple-500 text-white text-xs font-bold px-2 py-1 rounded-full">OFERTA</span>
@@ -325,8 +354,8 @@
           </div>
         </div>
         <div class="flex-grow p-4 flex flex-col">
-          <h3 class="text-lg font-bold text-gray-900 group-hover:text-indigo-600 transition-colors">
-            Monitor ASUS ROG 27"
+          <h3 class="text- font-bold text-gray-900 group-hover:text-indigo-600 transition-colors">
+            Portátil ASUS Zenbook DUO UX8406MA-PZ244W Intel Evo Edition - Intel Core Ultra 9 185H/32GB/1TB SSD/1
           </h3>
           <p class="mt-1 text-sm text-gray-600">240Hz, 1ms, QHD</p>
 
@@ -351,7 +380,7 @@
             </a>
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 </div>

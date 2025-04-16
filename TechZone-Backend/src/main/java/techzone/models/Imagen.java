@@ -2,7 +2,7 @@ package techzone.models;
 
 import jakarta.persistence.*;
 import lombok.*;
-import techzone.models.Enums.tipoImagen;
+import techzone.models.enums.tipoImagen;
 
 @Entity
 @Table(name = "imagenes")

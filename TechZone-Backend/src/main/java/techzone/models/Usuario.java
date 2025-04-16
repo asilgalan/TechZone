@@ -7,9 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import techzone.models.Enums.Roles;
+import techzone.models.enums.Roles;
 
-import java.time.LocalDateTime;
 import java.util.*;
 
 @Entity
@@ -40,7 +39,6 @@ public class Usuario {
     @NotBlank()
     @Column()
     private String usuario;
-
     private String telefono;
     @NotBlank()
     @Size(min = 6)

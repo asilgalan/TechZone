@@ -35,6 +35,7 @@ public class Proveedor {
     private Boolean activo=true;
     private Date fechaCreacion;
 
+
     @PrePersist
     public void prePersist() {
         setFechaCreacion(new Date());

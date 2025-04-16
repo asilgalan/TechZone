@@ -4,8 +4,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+
 
 
 @Entity
@@ -34,6 +34,16 @@ public class Producto {
     @JoinColumn(nullable = false,name = "id_marca")
     private Marca marca;
 
+    @Column(name = "imagen_principal")
+    private String imagenPrincipal;
+
+    @ElementCollection
+    @CollectionTable(
+            name = "producto_imagenes",
+            joinColumns = @JoinColumn(name = "producto_id")
+    )
+    @Column(name = "imagen_url")
+    private List<String> imagenes;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(nullable = false,name="id_categoria")
     private Categoria categoria;
@@ -55,11 +65,11 @@ public class Producto {
     @Column(name="fecha_lanzamiento")
     private Date fechaLanzamiento;
     @NotBlank()
-    @Column(nullable = false,name="fecha_creacion")
+    @Column(nullable = true,name="fecha_creacion")
     private LocalDateTime fechaCreacion;
 
     @NotBlank()
-    @Column(nullable = false,name="ultima_actualizacion")
+    @Column(nullable = true,name="ultima_actualizacion")
     private LocalDateTime ultimaActualizacion;
 
     private Integer garantia;
