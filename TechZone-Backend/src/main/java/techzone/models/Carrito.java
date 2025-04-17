@@ -1,27 +1,32 @@
 package techzone.models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
-import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import java.util.List;
+import jakarta.persistence.*;
+import lombok.*;
+import java.util.*;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-
+@Entity
+@Table(name = "carritos")
 public class Carrito {
 
-    private List<Producto> producto;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id_carrito")
+    private Long idCarrito;
 
-    private Double precioProducto;
+    @OneToOne
+    @JoinColumn(name = "usuario_id", nullable = false)
+    private Usuario usuario;
 
-    private Integer cantidad;
+    @OneToMany(mappedBy = "carrito", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ItemCarrito> items = new ArrayList<>();
 
-    private Double precioTotal;
-
+    @Transient
+    public Double getTotal() {
+        return items.stream()
+                .mapToDouble(ItemCarrito::getSubtotal)
+                .sum();
+    }
 }

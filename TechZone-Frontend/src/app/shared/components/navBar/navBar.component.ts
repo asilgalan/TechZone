@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } from '@angular/core';
 import { CarritoSidebarComponent } from '../../../products/components/carrito-sidebar/carrito-sidebar.component';
 import { ProductoFavoritoComponent } from '../../../products/components/producto-favorito/producto-favorito.component';
 import { RouterLink } from '@angular/router';
@@ -7,6 +7,8 @@ import { AuthService } from '../../../auth/services/authService.service';
 import { MenuMiCuentaComponent } from '../../../micuenta/components/menuMiCuenta/menuMiCuenta.component';
 import { LoginPageComponent } from "../../../auth/pages/Login-page/Login-page.component";
 import { single, take, timer } from 'rxjs';
+import { CarritoService } from '../../../products/services/Carrito.service';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'nav-bar',
@@ -22,8 +24,11 @@ export class NavBarComponent{
   authService=inject(AuthService);
   verMenuMiCuenta=signal(false);
   cartOpen = false;
+  private carritoService = inject(CarritoService);
   favoritesOpen=false;
-  cartItemCount=1;
+// En tu componente.ts
+carrito = toSignal(this.carritoService.carrito$, {initialValue: null});
+totalProducto = computed(() => this.carrito()?.items?.length || 0);
 
 
   verUserMenu(){

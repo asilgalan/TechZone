@@ -1,3 +1,4 @@
+import { AuthService } from './../../auth/services/authService.service';
 import { Productos } from './../interfaces/Producto.interface';
 import { inject, Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
@@ -10,7 +11,7 @@ export class ProductoService {
 
   private _favoritos = signal<any[]>([]);
   public favoritos = this._favoritos.asReadonly();
-
+     authService=inject(AuthService)
   productos(): Observable<Productos[]> {
     return this.http.get<Productos[]>(`${environment.base_url}/productos/todos`).pipe(
       tap(resp => console.log(resp))
@@ -52,13 +53,15 @@ export class ProductoService {
   eliminarFavorito(id: number): Observable<any> {
     return this.http.get(`${environment.base_url}/productos/eliminarFavorito/${id}`).pipe(
 
+      tap(() => this.favoritosUsuario(this.authService.user()?.idUsuario!).subscribe()),
       catchError(error => {
         console.error("Error en la solicitud", error);
         return throwError(() => new Error('Error al eliminar favorito'));
       })
     );
   }
-// Método para alternar estado
+
+
 toggleFavorito(idProducto: number, idUsuario: number): Observable<any> {
   const favoritoExistente = this._favoritos().find(f => f.producto.idProducto === idProducto);
 

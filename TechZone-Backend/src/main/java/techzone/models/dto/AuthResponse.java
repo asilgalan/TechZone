@@ -11,7 +11,6 @@ import java.util.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AuthResponse {
-
     private String token;
     private UsuarioDto user;
     private Set<Roles> roles;

@@ -1,3 +1,6 @@
+import { User } from "../../auth/interfaces/Usuario.interface";
+import { Producto } from "./Favorito.interface";
+
 export interface Productos {
   idProducto:          number;
   nombre:              string;
@@ -43,4 +46,19 @@ export interface Marca {
   descripcion: string;
   logoImg:     string;
   enlaceWeb:   string;
+}
+export interface ItemCarrito {
+  id?: number;
+  producto: Producto;
+  cantidad: number;
+  subtotal?: number; // Puede ser calculado en el frontend
+  precioEnMomentoDeAgregar?: number; // Para historial de precios
+}
+
+// interfaces/Carrito.interface.ts
+export interface Carrito {
+  id?: number;
+  usuario: User | number;
+  items: ItemCarrito[];
+  total?: number;
 }

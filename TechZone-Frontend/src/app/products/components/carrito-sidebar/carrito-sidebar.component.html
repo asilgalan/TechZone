@@ -1,102 +1,108 @@
-<div class="fixed inset-0 overflow-hidden z-50" *ngIf="isOpen" aria-labelledby="slide-over-title" role="dialog" aria-modal="true">
-  <div class="absolute inset-0 overflow-hidden">
-    <!-- Fondo oscuro -->
-    <div class="fixed inset-0 bg-gray-100/35 transition-opacity" aria-hidden="true" (click)="closeCart.emit()"></div>
+@if(isOpen){
 
-    <div class="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
-      <!-- Panel del carrito -->
-      <div class="pointer-events-auto w-screen max-w-md">
-        <div class="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">
-          <div class="flex-1 overflow-y-auto px-4 py-6 sm:px-6">
-            <!-- Encabezado -->
-            <div class="flex items-start justify-between">
-              <h2 class="text-lg font-medium text-gray-900">Carrito de compras</h2>
-              <button type="button" class="relative -m-2 p-2 text-gray-400 hover:text-gray-500" (click)="closeCart.emit()">
-                <span class="absolute -inset-0.5"></span>
-                <span class="sr-only">Cerrar</span>
-                <svg class="size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
-            @if(cartItems.length ===0){
-              <div class="text-2xl font-bold">Carrito Vacio</div>
-            }
-            <!-- Lista de productos -->
-            <div class="mt-8">
-              <div class="flow-root">
-                <ul role="list" class="-my-6 divide-y divide-gray-200">
-                  @for (item of cartItems; track $index) {
-                  <li class="flex py-6" >
-                    <div class="size-24 shrink-0 overflow-hidden rounded-md border border-gray-200">
-                      <img [src]="item.image" [alt]="item.name" class="size-full object-cover">
-                    </div>
+  <div class="fixed inset-0 overflow-hidden z-50"
+    aria-labelledby="slide-over-title" role="dialog" aria-modal="true"
+  >
+    <div class="absolute inset-0 overflow-hidden">
+      <!-- Fondo translúcido -->
+      <div class="fixed inset-0 bg-gray-100/35 transition-opacity backdrop-blur-sm" aria-hidden="true" (click)="closeCart.emit()"></div>
 
-                    <div class="ml-4 flex flex-1 flex-col">
-                      <div>
-                        <div class="flex justify-between text-base font-medium text-gray-900">
-                          <h3>
-                            <a href="#">{{item.name}}</a>
-                          </h3>
-                          <p class="ml-4">{{totalPorProducto(item.id) | currency}}</p>
-                        </div>
-                        <p class="mt-1 text-sm text-gray-500">{{item.color}}</p>
-                      </div>
-                      <div class="flex flex-1 items-end justify-between text-sm">
-                        <!-- Controles de cantidad -->
-                        <div class="flex items-center border rounded-md">
-                          <button (click)="decreaseQuantity(item)" class="px-2 py-1 text-gray-600 hover:bg-gray-100">
-                            -
-                          </button>
-                          <span class="px-2">{{item.quantity}}</span>
-                          <button (click)="increaseQuantity(item)" class="px-2 py-1 text-gray-600 hover:bg-gray-100">
-                            +
-                          </button>
+      <div class="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
+        <!-- Panel del carrito -->
+        <div class="pointer-events-auto w-screen max-w-md">
+          <div class="flex h-full flex-col overflow-y-scroll bg-white shadow-[0_0_20px_rgba(99,102,241,0.2)] border-l-4 border-indigo-500 rounded-l-xl transition-all">
+            <div class="flex-1 overflow-y-auto px-4 py-6 sm:px-6">
+              <!-- Encabezado -->
+              <div class="flex items-start justify-between border-b border-gray-200 pb-4">
+                <h2 class="text-xl font-extrabold text-indigo-600 tracking-wide uppercase">Carrito de Compra</h2>
+                <button type="button" class="relative -m-2 p-2 text-indigo-500 hover:text-red-500 transition" (click)="closeCart.emit()">
+                  <span class="sr-only">Cerrar</span>
+                  <svg class="size-6" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+
+              @if (!carrito()?.items?.length) {
+                <div class="text-2xl font-bold text-center text-gray-400 mt-10"> Carrito Vacío</div>
+              }
+
+              <!-- Lista de productos -->
+              <div class="mt-8">
+                <div class="flow-root">
+                  <ul role="list" class="-my-6 divide-y divide-gray-200">
+                    @for (item of carrito()?.items; track item.producto.idProducto) {
+                      <li class="flex py-6 group transition-all">
+                        <div class="size-24 shrink-0 overflow-hidden rounded-md border-2 border-indigo-200">
+                          <img [src]="'assets/productos/' + item.producto.imagenPrincipal" class="size-full object-cover rounded-md">
                         </div>
 
-                        <div class="flex">
-                          <button type="button" class="font-medium text-red-600 hover:text-red-500" (click)="removeItem(item)">
-                            Eliminar
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </li>
-                }
+                        <div class="ml-4 flex flex-1 flex-col">
+                          <div>
+                            <div class="flex justify-between text-base font-semibold text-gray-900">
+                              <h3>
+                                <a href="#" class="hover:text-indigo-600 transition">{{item.producto.nombre}}</a>
+                              </h3>
+                              <p class="ml-4 text-indigo-500">{{item.producto.precio | currency:'EUR'}}</p>
+                            </div>
+                            <p class="mt-1 text-sm text-gray-500 italic">{{item.producto.descripcionCorta}}</p>
+                          </div>
+                          <div class="flex flex-1 items-end justify-between text-sm">
+                            <!-- Controles de cantidad -->
+                            <div class="flex items-center border border-gray-300 rounded-md">
+                              <button (click)="actualizarCantidad(item.producto.idProducto, item.cantidad - 1)"
+                                      class="px-2 py-1 text-gray-600 hover:bg-indigo-100">
+                                -
+                              </button>
+                              <span class="px-3 font-semibold text-gray-800">{{item.cantidad}}</span>
+                              <button (click)="actualizarCantidad(item.producto.idProducto, item.cantidad + 1)"
+                                      class="px-2 py-1 text-gray-600 hover:bg-indigo-100">
+                                +
+                              </button>
+                            </div>
 
-                </ul>
+                            <div class="flex">
+                              <button type="button" class="font-medium text-red-600 hover:text-red-500"
+                                      (click)="eliminarProducto(item.producto.idProducto)">
+                                Eliminar
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </li>
+                    }
+                  </ul>
+                </div>
               </div>
             </div>
+
+            <!-- Resumen del pedido -->
+            @if (carrito()?.items?.length) {
+              <div class="border-t border-gray-200 px-4 py-6 sm:px-6">
+                <div class="flex justify-between text-base font-bold text-indigo-600">
+                  <p>Subtotal</p>
+                  <p>{{calcularTotal() | currency:'EUR'}}</p>
+                </div>
+                <p class="mt-1 text-sm text-gray-500">⚠ Envío e impuestos calculados al finalizar.</p>
+                <div class="mt-6">
+                  <a href="#" class="flex cursor-pointer items-center justify-center rounded-md bg-indigo-500 px-6 py-3 text-base font-semibold text-white shadow-md hover:bg-indigo-600 hover:shadow-lg transition">
+                    Finalizar compra
+                  </a>
+                </div>
+                <div class="mt-6 flex justify-center text-center text-sm text-gray-500">
+                  <p>
+                    o
+                    <button type="button" class="font-medium text-indigo-500 hover:text-indigo-400 cursor-pointer" (click)="closeCart.emit()">
+                      Seguir comprando
+                      <span aria-hidden="true"> &rarr;</span>
+                    </button>
+                  </p>
+                </div>
+              </div>
+            }
           </div>
-
-          <!---->
-
-          <!-- Resumen del pedido -->
-          <div class="border-t border-gray-200 px-4 py-6 sm:px-6">
-            <div class="flex justify-between text-base font-medium text-gray-900">
-              <p>Subtotal</p>
-              <p>{{subtotal | currency}}</p>
-            </div>
-            <p class="mt-0.5 text-sm text-gray-500">Envío e impuestos calculados al finalizar.</p>
-            <div class="mt-6">
-              <a href="#" class="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-xs hover:bg-indigo-700">
-                Finalizar compra
-              </a>
-            </div>
-            <div class="mt-6 flex justify-center text-center text-sm text-gray-500">
-              <p>
-                o
-                <button type="button" class="font-medium text-indigo-600 hover:text-indigo-500" (click)="closeCart.emit()">
-                  Seguir comprando
-                  <span aria-hidden="true"> &rarr;</span>
-                </button>
-              </p>
-            </div>
-          </div>
-
         </div>
-
       </div>
     </div>
   </div>
-</div>
+  }

@@ -62,9 +62,9 @@
       <button (click)="openCart()"
               class="p-1 px-3 mx-1 bg-gray-200 rounded-full hover:bg-gray-300 relative transition-colors lg:p-4 lg:px-5 lg:mx-1">
         <i class="pi pi-shopping-cart text-xl" style="color: #000000;"></i>
-        @if(cartItemCount > 0) {
+        @if( totalProducto()! > 0) {
           <span class="absolute -top-1 -right-0.5 bg-indigo-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-            {{cartItemCount}}
+            {{totalProducto()}}
           </span>
         }
       </button>
